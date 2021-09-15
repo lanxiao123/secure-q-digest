@@ -1,0 +1,5 @@
+TERMINAL #1 ALICE
+./bin/q-digest-example 1 3333 3 test/alice.txt
+
+TERMINAL #2 BOB
+./bin/q-digest-example 2 3333 5 test/bob.txt
