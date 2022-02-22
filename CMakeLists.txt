@@ -4,7 +4,7 @@ project (q-digest-mpc)
 set(NAME "q-digest-mpc")
 
 find_path(CMAKE_FOLDER NAMES cmake/emp-tool-config.cmake)
-include(${CMAKE_FOLDER}/cmake/common.cmake)
+include(${CMAKE_FOLDER}/cmake/emp-base.cmake)
 #include(${CMAKE_FOLDER}/cmake/source_of_randomness.cmake)
 #include(${CMAKE_FOLDER}/cmake/threading.cmake)
 
@@ -19,12 +19,5 @@ include_directories(${EMP-SH2PC_INCLUDE_DIRS})
 install(FILES cmake/q-digest-mpc-config.cmake DESTINATION cmake/)
 install(DIRECTORY q-digest-mpc DESTINATION include/)
 
-# Test cases
-macro (add_test _name)
-	add_test_with_lib(${_name} ${EMP-OT_LIBRARIES})
-endmacro()
-
-add_test (q-digest-example)
-add_test (func-test)
-add_test (merge-result-check)
-add_test (q-digest-ocheck)
+ENABLE_TESTING()
+ADD_SUBDIRECTORY(test)

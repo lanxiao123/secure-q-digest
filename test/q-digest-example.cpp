@@ -44,6 +44,7 @@ int parse_nodes(string path, QDigestNode *res, int total_len, int alice_len, int
             cout << "FILE \"" << path << "\" NOT EXIST" << endl;
             return -1;
         }
+        return 0;
     }
     // BOB INPUT
     if (party == BOB) {
@@ -327,6 +328,10 @@ int main(int argc, char **argv) {
     if (party == ALICE) {
         HalfGateGen <NetIO> *circ = (HalfGateGen <NetIO> *) CircuitExecution::circ_exec;
         cout << "number of gates: " << circ->mitccrh.gid << endl;
+        ofstream stat_result;
+        stat_result.open("stat_result.txt",ofstream::app);
+        stat_result<<argv[3]<<" "<<"merge time is "<<merge_time<<"; gates are "<<circ->mitccrh.gid<<endl;
+        stat_result.close();
     }
 
     delete io;

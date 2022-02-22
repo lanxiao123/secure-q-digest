@@ -57,6 +57,7 @@ int parse_nodes_ocheck(string path, QDigestNode *res, int alice_len, int party) 
             cout << "FILE \"" << path << "\" NOT EXIST" << endl;
             return -1;
         }
+        return 0;
     }
     // BOB INPUT
     if (party == BOB) {

@@ -49,6 +49,8 @@ namespace emp {
         QDigestNode select(const Bit &sel, const QDigestNode &rhs) const;
 
         QDigestNode operator^(const QDigestNode &rhs) const;
+        
+        QDigestNode operator^=(const QDigestNode &rhs);
 
         int size() const;
 
@@ -89,9 +91,43 @@ namespace emp {
         return res;
     }
 
+    QDigestNode QDigestNode::operator^=(const QDigestNode &rhs) {
+        this->id ^= rhs.id;
+        this->c ^= rhs.c;
+        this->isDummy ^= rhs.isDummy;
+        this->isParent ^= rhs.isParent;
+        return (*this);
+    }
    
 
+    /*this is used for OMerge（isDummy, -id，isParent）*/
+    Bit QDigestNode::geq(const QDigestNode &rhs) const {
+
+        Bit bitTrue(true);
+        Bit bitFalse(false);
+
+        Bit res = bitTrue;
+        Bit cond0 = this->id == rhs.id;
+
+        Bit cond1 = this->isDummy;
+        Bit cond2 = (!this->isDummy) & (rhs.isDummy);
+        Bit cond3 = (!this->isDummy) & (!rhs.isDummy) & cond0;
+        Bit cond4 = (!this->isDummy) & (!rhs.isDummy) & !cond0;
+
+//        res = IF(cond1, bitFalse, res);
+        res = res.select(cond1, bitFalse);
+//        res = IF(cond2, bitTrue, res);
+        res = res.select(cond2, bitTrue);
+//        res = IF(cond3, !this->isParent, res);
+        res = res.select(cond3, !this->isParent);
+//        res = IF(cond4, this->id >= rhs.id, res);
+        res = res.select(cond4, this->id >= rhs.id);
+
+        return res;
+    }
+
     /*this is used for OCheck（id, -isParent）*/
+    /*
     Bit QDigestNode::geq(const QDigestNode &rhs) const {
 
         Bit bitTrue(true);
@@ -108,6 +144,7 @@ namespace emp {
 
         return res;
     }
+    */
 
    
 
